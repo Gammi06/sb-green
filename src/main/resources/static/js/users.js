@@ -20,17 +20,6 @@ $("#btnUpdate").click(() => {
 	update();
 });
 
-function koreanCheck(username, password, email) {
-	let korRule = /^[가-힣]*$/;
-	if (korRule.test(username) == false &&
-		korRule.test(password) == false &&
-		korRule.test(email) == false) {
-		return true;
-	} else {
-		return false;
-	}
-}
-
 function emailCheck(str) {
 	let reg_email = /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
 	if (reg_email.test(str)) {
@@ -65,10 +54,12 @@ function samePassword(password, sPassword) {
 }
 
 function koreanCheck(str) {
-	let korRule = /^[가-힣]*$/;
+	let korRule = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
 	if (korRule.test(str)) {
+		console.log(str + ": " + korRule.test(str));
 		return true;
 	} else {
+		console.log(str + ": " + korRule.test(str));
 		return false;
 	}
 }
@@ -76,15 +67,23 @@ function koreanCheck(str) {
 function spaceCheck(str) {
 	let reg = /\s/g;
 	if (str.match(reg)) {
-		console.log("spaceCheck = 참");
 		return true;
 	} else {
-		console.log("spaceCheck = 거짓");
 		return false;
 	}
 }
 
-function test() {
+function join() {
+	if (isUsernameSameCheck == false) {
+		alert("유저네임 중복 체크를 진행해주세요");
+		return;
+	}
+
+	let data = {
+		username: $("#username").val(),
+		password: $("#password").val(),
+		email: $("#email").val()
+	};
 	let sPassword = $("#passwordSame").val();
 
 	if (emailCheck(data.email) == false) {
@@ -103,22 +102,34 @@ function test() {
 	}
 
 	if (koreanCheck(data.username)) {
-		alert("유저이름에 한글을 사용할 수 없습니다.");
-		return;
-	}
-}
-
-function join() {
-	if (isUsernameSameCheck == false) {
-		alert("유저네임 중복 체크를 진행해주세요");
+		alert("한글을 사용할 username 없습니다.");
 		return;
 	}
 
-	let data = {
-		username: $("#username").val(),
-		password: $("#password").val(),
-		email: $("#email").val()
-	};
+	if (koreanCheck(data.password)) {
+		alert("한글을 사용할 password 없습니다.");
+		return;
+	}
+
+	if (koreanCheck(data.email)) {
+		alert("한글을 사용할 email 없습니다.");
+		return;
+	}
+
+	if (spaceCheck(data.username)) {
+		alert("공백을 사용할 username 없습니다.");
+		return;
+	}
+
+	if (spaceCheck(data.password)) {
+		alert("공백을 사용할 password 없습니다.");
+		return;
+	}
+
+	if (spaceCheck(data.email)) {
+		alert("공백을 사용할 email 없습니다.");
+		return;
+	}
 
 	$.ajax("/api/join", {
 		type: "POST",

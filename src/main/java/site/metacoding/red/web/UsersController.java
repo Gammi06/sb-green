@@ -72,7 +72,8 @@ public class UsersController {
 		if (bindingResult.hasErrors()) {
 			System.out.println("에러가 있습니다.");
 			FieldError fe = bindingResult.getFieldError();
-			throw new MyApiException(fe.toString());
+
+			throw new MyApiException(fe.getDefaultMessage());
 		} else {
 			System.out.println("에러가 없습니다.");
 		}
