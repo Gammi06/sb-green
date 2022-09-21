@@ -20,11 +20,100 @@ $("#btnUpdate").click(() => {
 	update();
 });
 
+function koreanCheck(username, password, email) {
+	let korRule = /^[가-힣]*$/;
+	if (korRule.test(username) == false &&
+		korRule.test(password) == false &&
+		korRule.test(email) == false) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+function emailCheck(str) {
+	let reg_email = /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
+	if (reg_email.test(str)) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+function upperCount(str) {
+	let answer = 0;
+	for (let x of str) {
+		if (x === x.toUpperCase()) answer++;
+	}
+	return answer;
+}
+
+function upperCheck(str) {
+	if (upperCount(str) < 1) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+function samePassword(password, sPassword) {
+	if (password != sPassword) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+function koreanCheck(str) {
+	let korRule = /^[가-힣]*$/;
+	if (korRule.test(str)) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+function spaceCheck(str) {
+	let reg = /\s/g;
+	if (str.match(reg)) {
+		console.log("spaceCheck = 참");
+		return true;
+	} else {
+		console.log("spaceCheck = 거짓");
+		return false;
+	}
+}
+
+function test() {
+	let sPassword = $("#passwordSame").val();
+
+	if (emailCheck(data.email) == false) {
+		alert("올바른 이메일 형식이 아닙니다.");
+		return;
+	}
+
+	if (upperCheck(data.username) == true) {
+		alert("유저네임은 대문자를 포함해야합니다.");
+		return;
+	}
+
+	if (samePassword(data.password, sPassword)) {
+		alert("비밀번호가 다릅니다.");
+		return;
+	}
+
+	if (koreanCheck(data.username)) {
+		alert("유저이름에 한글을 사용할 수 없습니다.");
+		return;
+	}
+}
+
 function join() {
 	if (isUsernameSameCheck == false) {
 		alert("유저네임 중복 체크를 진행해주세요");
 		return;
 	}
+
 	let data = {
 		username: $("#username").val(),
 		password: $("#password").val(),
@@ -41,6 +130,9 @@ function join() {
 	}).done((res) => {
 		if (res.code == 1) {
 			location.href = "/loginForm";
+		} else {
+			alert(res.meg);
+			history.back();
 		}
 	});
 }

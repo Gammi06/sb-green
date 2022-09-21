@@ -16,7 +16,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		// **은 s/뒤의 모든 주소 ||| *은 s/boards(여기까지)/매칭안됨
 		// + 패스는 여러개를 추가할 수 있다.
 		registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/s/**");
-		registry.addInterceptor(new HelloInterceptor()).addPathPatterns("/**");
+		//registry.addInterceptor(new HelloInterceptor()).addPathPatterns("/**");
 		//.addPathPatterns("/admin/**").excludePathPatterns("/s/boards/**");
 		//add 더하기
 		//exclude 제외하기
